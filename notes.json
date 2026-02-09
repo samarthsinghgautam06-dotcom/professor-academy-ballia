@@ -1,0 +1,26 @@
+[
+  {
+    "title": "UGC-NET Paper 1: Teaching Aptitude",
+    "description": "Sample notes file. Replace this PDF with your own notes.",
+    "tags": ["UGC-NET", "Paper 1", "Teaching Aptitude"],
+    "format": "PDF",
+    "size": "0.1 MB",
+    "link": "assets/notes/ugc-net-paper1-sample.pdf"
+  },
+  {
+    "title": "Assistant Professor: Research Aptitude",
+    "description": "Sample notes file. Replace this PDF with your own notes.",
+    "tags": ["Assistant Professor", "Research Aptitude"],
+    "format": "PDF",
+    "size": "0.1 MB",
+    "link": "assets/notes/research-aptitude-sample.pdf"
+  },
+  {
+    "title": "KVS: Current Affairs Quick Notes",
+    "description": "Sample notes file. Replace this PDF with your own notes.",
+    "tags": ["KVS", "Current Affairs"],
+    "format": "PDF",
+    "size": "0.1 MB",
+    "link": "assets/notes/kvs-current-affairs-sample.pdf"
+  }
+]

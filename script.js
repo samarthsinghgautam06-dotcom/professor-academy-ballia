@@ -1,138 +1,155 @@
-const config = {
-  herName: "Sana Meri Kammo",
-  myName: "Samarth Singh",
-  dateText: "February 7, 2026",
-};
+const navToggle = document.getElementById("navToggle");
+const navLinks = document.getElementById("navLinks");
 
-const setText = (id, value) => {
-  const el = document.getElementById(id);
-  if (el && value) {
-    el.textContent = value;
-  }
-};
-
-setText("herName", config.herName);
-setText("herNameInline", config.herName);
-setText("myName", config.myName);
-setText("myNameFooter", config.myName);
-setText("dateText", config.dateText);
-
-const envelope = document.getElementById("envelope");
-if (envelope) {
-  envelope.addEventListener("click", () => {
-    envelope.classList.toggle("is-open");
+if (navToggle && navLinks) {
+  navToggle.addEventListener("click", () => {
+    const isOpen = navLinks.classList.toggle("is-open");
+    navToggle.setAttribute("aria-expanded", String(isOpen));
   });
 }
-
-const secretButton = document.getElementById("secretButton");
-const secretText = document.getElementById("secretText");
-if (secretButton && secretText) {
-  secretButton.addEventListener("click", () => {
-    const isVisible = secretText.classList.toggle("is-visible");
-    secretButton.textContent = isVisible ? "Hide message" : "Reveal message";
-  });
-}
-
-const scrollButtons = document.querySelectorAll("[data-scroll]");
-scrollButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const target = document.querySelector(button.dataset.scroll);
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  });
-});
 
 const observer = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        entry.target.classList.add("in-view");
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
       }
     });
   },
-  { threshold: 0.15 }
+  { threshold: 0.2 }
 );
 
 document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
 
-const petalField = document.getElementById("petalField");
-const petalCount = 26;
-if (petalField) {
-  for (let i = 0; i < petalCount; i += 1) {
-    const petal = document.createElement("span");
-    petal.className = "petal";
-    petal.style.left = `${Math.random() * 100}vw`;
-    petal.style.animationDelay = `${Math.random() * 8}s`;
-    petal.style.animationDuration = `${8 + Math.random() * 6}s`;
-    petal.style.opacity = `${0.4 + Math.random() * 0.6}`;
-    petalField.appendChild(petal);
-  }
-}
+const notesGrid = document.getElementById("notesGrid");
+const notesSearch = document.getElementById("notesSearch");
+const notesFilters = document.getElementById("notesFilters");
 
-const loveField = document.getElementById("loveField");
-const heartCount = 14;
-if (loveField) {
-  for (let i = 0; i < heartCount; i += 1) {
-    const heart = document.createElement("span");
-    heart.className = "heart-float";
-    heart.style.left = `${Math.random() * 100}vw`;
-    heart.style.animationDelay = `${Math.random() * 10}s`;
-    heart.style.animationDuration = `${10 + Math.random() * 8}s`;
-    heart.style.opacity = `${0.35 + Math.random() * 0.5}`;
-    heart.style.setProperty("--scale", `${0.7 + Math.random() * 0.8}`);
-    loveField.appendChild(heart);
-  }
-}
-
-const sparkleField = document.getElementById("sparkleField");
-const sparkleCount = 22;
-if (sparkleField) {
-  for (let i = 0; i < sparkleCount; i += 1) {
-    const sparkle = document.createElement("span");
-    sparkle.className = "sparkle";
-    sparkle.style.left = `${Math.random() * 100}vw`;
-    sparkle.style.top = `${Math.random() * 100}vh`;
-    sparkle.style.animationDelay = `${Math.random() * 6}s`;
-    sparkle.style.animationDuration = `${5 + Math.random() * 4}s`;
-    sparkleField.appendChild(sparkle);
-  }
-}
-
-const wishButton = document.getElementById("wishButton");
-const confettiColors = [
-  "#ff5c8d",
-  "#ff9db9",
-  "#ffd6e2",
-  "#fff2f7",
-  "#b31237",
+const fallbackNotes = [
+  {
+    title: "UGC-NET Paper 1: Teaching Aptitude",
+    description: "Sample notes file. Replace this PDF with your own.",
+    tags: ["UGC-NET", "Paper 1"],
+    format: "PDF",
+    size: "0.1 MB",
+    link: "assets/notes/ugc-net-paper1-sample.pdf",
+  },
+  {
+    title: "Assistant Professor: Research Aptitude",
+    description: "Sample notes file. Replace this PDF with your own.",
+    tags: ["Assistant Professor", "Research Aptitude"],
+    format: "PDF",
+    size: "0.1 MB",
+    link: "assets/notes/research-aptitude-sample.pdf",
+  },
+  {
+    title: "KVS: Current Affairs Quick Notes",
+    description: "Sample notes file. Replace this PDF with your own.",
+    tags: ["KVS", "Current Affairs"],
+    format: "PDF",
+    size: "0.1 MB",
+    link: "assets/notes/kvs-current-affairs-sample.pdf",
+  },
 ];
 
-const launchConfetti = () => {
-  const container = document.createElement("div");
-  container.className = "confetti";
-  document.body.appendChild(container);
+let notesData = [];
+let activeFilter = "All";
+let searchQuery = "";
 
-  for (let i = 0; i < 40; i += 1) {
-    const piece = document.createElement("div");
-    piece.className = "confetti__piece";
-    piece.style.left = `${Math.random() * 100}vw`;
-    piece.style.background =
-      confettiColors[Math.floor(Math.random() * confettiColors.length)];
-    piece.style.animationDuration = `${3 + Math.random() * 2}s`;
-    piece.style.transform = `translateY(-10px) rotate(${Math.random() * 360}deg)`;
-    container.appendChild(piece);
+const normalize = (value) => (value || "").toLowerCase();
 
-    piece.addEventListener("animationend", () => {
-      piece.remove();
-    });
+const renderNotes = () => {
+  if (!notesGrid) return;
+  notesGrid.innerHTML = "";
+
+  const filtered = notesData.filter((note) => {
+    const matchesFilter =
+      activeFilter === "All" || (note.tags || []).includes(activeFilter);
+    const haystack = [note.title, note.description, ...(note.tags || [])]
+      .map(normalize)
+      .join(" ");
+    const matchesSearch = haystack.includes(normalize(searchQuery));
+    return matchesFilter && matchesSearch;
+  });
+
+  if (!filtered.length) {
+    notesGrid.innerHTML =
+      '<div class="note-card"><h3>No notes found</h3><p>Try another keyword or filter.</p></div>';
+    return;
   }
 
-  setTimeout(() => {
-    container.remove();
-  }, 4500);
+  filtered.forEach((note) => {
+    const card = document.createElement("article");
+    card.className = "note-card";
+
+    const tagHtml = (note.tags || [])
+      .map((tag) => `<span class="note-tag">${tag}</span>`)
+      .join("");
+
+    card.innerHTML = `
+      <h3>${note.title}</h3>
+      <p>${note.description || ""}</p>
+      <div class="note-meta">
+        <span>${note.format || ""}</span>
+        <span>${note.size || ""}</span>
+      </div>
+      <div class="note-tags">${tagHtml}</div>
+      <a class="note-link" href="${note.link}" target="_blank" rel="noopener">
+        Download Notes
+      </a>
+    `;
+
+    notesGrid.appendChild(card);
+  });
 };
 
-if (wishButton) {
-  wishButton.addEventListener("click", launchConfetti);
+const renderFilters = () => {
+  if (!notesFilters) return;
+  const tags = new Set();
+  notesData.forEach((note) => {
+    (note.tags || []).forEach((tag) => tags.add(tag));
+  });
+
+  const allTags = ["All", ...Array.from(tags)];
+  notesFilters.innerHTML = "";
+
+  allTags.forEach((tag) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `filter-chip${tag === activeFilter ? " is-active" : ""}`;
+    button.textContent = tag;
+    button.addEventListener("click", () => {
+      activeFilter = tag;
+      document.querySelectorAll(".filter-chip").forEach((chip) => {
+        chip.classList.toggle("is-active", chip.textContent === tag);
+      });
+      renderNotes();
+    });
+    notesFilters.appendChild(button);
+  });
+};
+
+const loadNotes = async () => {
+  if (!notesGrid) return;
+  try {
+    const response = await fetch("notes.json", { cache: "no-store" });
+    if (!response.ok) throw new Error("Failed to load notes.json");
+    const data = await response.json();
+    notesData = Array.isArray(data) ? data : fallbackNotes;
+  } catch (error) {
+    notesData = fallbackNotes;
+  }
+
+  renderFilters();
+  renderNotes();
+};
+
+if (notesSearch) {
+  notesSearch.addEventListener("input", (event) => {
+    searchQuery = event.target.value;
+    renderNotes();
+  });
 }
+
+loadNotes();
