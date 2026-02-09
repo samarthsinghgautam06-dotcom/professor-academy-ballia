@@ -83,6 +83,14 @@ const renderPlaylists = () => {
     card.innerHTML = `
       <h3>${playlist.title}</h3>
       <p class="playlist-meta">Playlist ID: ${playlist.listId}</p>
+      <div class="playlist-embed">
+        <iframe
+          src="https://www.youtube.com/embed/videoseries?list=${playlist.listId}"
+          title="${playlist.title}"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
       <div class="playlist-actions">
         <button type="button" data-playlist="${playlist.listId}">Play Here</button>
         <a href="${listUrl}" target="_blank" rel="noopener">Open Playlist</a>
