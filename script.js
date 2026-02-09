@@ -8,6 +8,21 @@ if (navToggle && navLinks) {
   });
 }
 
+const uploadsEmbed = document.getElementById("uploadsEmbed");
+if (uploadsEmbed) {
+  const channelId = (uploadsEmbed.dataset.channelId || "").trim();
+  const playlistId = (uploadsEmbed.dataset.playlistId || "").trim();
+
+  if (channelId) {
+    const uploadsId = channelId.startsWith("UC")
+      ? `UU${channelId.slice(2)}`
+      : channelId;
+    uploadsEmbed.src = `https://www.youtube.com/embed/videoseries?list=${uploadsId}`;
+  } else if (playlistId) {
+    uploadsEmbed.src = `https://www.youtube.com/embed/videoseries?list=${playlistId}`;
+  }
+}
+
 const observer = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {

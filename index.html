@@ -151,16 +151,20 @@
 
       <section class="section" id="videos">
         <div class="section__header reveal">
-          <h2>Video Library</h2>
+          <h2>All Channel Videos</h2>
           <p>
-            सभी videos देखने के लिए playlist खोलें और lecture-by-lecture तैयारी करें।
+            सभी videos यहाँ एक जगह दिखेंगे. Channel ID add करने पर यह section अपने आप
+            latest uploads से अपडेट होता रहेगा.
           </p>
         </div>
         <div class="video-grid">
           <div class="video-frame video-frame--large reveal">
             <iframe
+              id="uploadsEmbed"
+              data-playlist-id="PLVNPzu8zqh7W__1qSUsMBdKtTrhKm3XZu"
+              data-channel-id=""
               src="https://www.youtube.com/embed/videoseries?list=PLVNPzu8zqh7W__1qSUsMBdKtTrhKm3XZu"
-              title="Professor Academy Ballia Playlist"
+              title="Professor Academy Ballia Videos"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
             ></iframe>
@@ -181,7 +185,7 @@
               target="_blank"
               rel="noopener"
             >
-              Full Playlist
+              Current Playlist
             </a>
             <a
               class="video-link"
@@ -192,7 +196,7 @@
               Visit Channel
             </a>
             <p class="video-links__note">
-              New videos आते ही playlist में add कर दिए जाते हैं — इसे bookmark करें।
+              Channel ID add करने के बाद यह embed सभी uploads दिखाएगा.
             </p>
           </div>
         </div>
