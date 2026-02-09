@@ -346,6 +346,59 @@ a {
   margin: 0;
 }
 
+.playlist-grid {
+  margin-top: 26px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+}
+
+.playlist-card {
+  background: var(--paper);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 10px;
+}
+
+.playlist-card h3 {
+  margin: 0;
+  font-family: var(--font-display);
+}
+
+.playlist-meta {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.playlist-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.playlist-actions button {
+  border: 1px solid rgba(16, 24, 32, 0.15);
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.playlist-actions button:hover {
+  background: rgba(16, 24, 32, 0.05);
+}
+
+.playlist-actions a {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(15, 94, 91, 0.1);
+  font-weight: 600;
+}
+
 .notes-toolbar {
   display: flex;
   flex-wrap: wrap;

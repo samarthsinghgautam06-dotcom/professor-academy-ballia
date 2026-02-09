@@ -23,6 +23,88 @@ if (uploadsEmbed) {
   }
 }
 
+const playlistGrid = document.getElementById("playlistGrid");
+const playlists = [
+  {
+    title: "Playlist 1",
+    listId: "PLVNPzu8zqh7Ww8CTWfjKYRVV8AwrSY2rw",
+    videoId: "nu0MVp2DFJE",
+  },
+  {
+    title: "Playlist 2",
+    listId: "PLVNPzu8zqh7UyUc3xSdiuTE8n6WGttfa8",
+    videoId: "sgryKeC1wBQ",
+  },
+  {
+    title: "Playlist 3",
+    listId: "PLVNPzu8zqh7VrqQ1h6kTGD0Yp0dtgPOpY",
+    videoId: "W4cMBheIjOc",
+  },
+  {
+    title: "Playlist 4",
+    listId: "PLVNPzu8zqh7UT0rUyoRn-RUDNhzYMhGUc",
+    videoId: "LAueSdHsf4k",
+  },
+  {
+    title: "Playlist 5",
+    listId: "PLVNPzu8zqh7XWuNRllSCdUih3xpKhh-xx",
+    videoId: "McgrXg-4cug",
+  },
+  {
+    title: "Playlist 6",
+    listId: "PLVNPzu8zqh7XVjD3gki6MklwWE63-9XkA",
+    videoId: "Fi8HSTxfPhQ",
+  },
+  {
+    title: "Playlist 7",
+    listId: "PLVNPzu8zqh7WpxeVMje2CcojCtAaZg-We",
+    videoId: "9oDiS-z53LA",
+  },
+  {
+    title: "Playlist 8",
+    listId: "PLVNPzu8zqh7V7b8tCB2Y5b8q8oHjMoNVh",
+    videoId: "Fi8HSTxfPhQ",
+  },
+];
+
+const renderPlaylists = () => {
+  if (!playlistGrid) return;
+
+  playlistGrid.innerHTML = "";
+  playlists.forEach((playlist) => {
+    const card = document.createElement("article");
+    card.className = "playlist-card";
+
+    const listUrl = `https://www.youtube.com/playlist?list=${playlist.listId}`;
+    const watchUrl = playlist.videoId
+      ? `https://www.youtube.com/watch?v=${playlist.videoId}&list=${playlist.listId}`
+      : listUrl;
+
+    card.innerHTML = `
+      <h3>${playlist.title}</h3>
+      <p class="playlist-meta">Playlist ID: ${playlist.listId}</p>
+      <div class="playlist-actions">
+        <button type="button" data-playlist="${playlist.listId}">Play Here</button>
+        <a href="${listUrl}" target="_blank" rel="noopener">Open Playlist</a>
+        <a href="${watchUrl}" target="_blank" rel="noopener">Watch Sample</a>
+      </div>
+    `;
+
+    playlistGrid.appendChild(card);
+  });
+
+  playlistGrid.querySelectorAll("button[data-playlist]").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!uploadsEmbed) return;
+      const listId = button.dataset.playlist;
+      uploadsEmbed.src = `https://www.youtube.com/embed/videoseries?list=${listId}`;
+      uploadsEmbed.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+};
+
+renderPlaylists();
+
 const observer = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
